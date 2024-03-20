@@ -9,7 +9,7 @@ services:
       - 3306:3306
     environment:
       - MYSQL_ROOT_PASSWORD=root
-      - MYSQL_DATABASE=points
+      - MYSQL_DATABASE=clockwise
       - TZ=America/Sao_Paulo
       - MYSQL_INITDB_SKIP_TZINFO=true
   
