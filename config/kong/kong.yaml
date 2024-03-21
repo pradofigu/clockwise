@@ -1,0 +1,16 @@
+_format_version: "2.1"
+
+services:
+  - name: user-service
+    url: http://httpbin
+    path: /
+    routes:
+      - name: user-routes
+        paths:
+          - /v1/user
+      - name: company-routes
+        paths:
+          - /v1/company
+      - name: service-routes
+        paths:
+          - /v1/service

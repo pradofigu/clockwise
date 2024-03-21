@@ -1,8 +1,99 @@
+version: "3.7"
+
 services:
-  database:
+  app-database:
     image: mysql:8.0.30-debian
+    container_name: maestro-app-database
     ports:
       - 3306:3306
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=points
+  
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.0.1
+    container_name: maestro-keycloak
+    command: start-dev --log-level=INFO
+    volumes:            
+      - keycloak_data:/var/lib/keycloak/data
+    environment:
+      - KC_DB=postgres
+      - KC_PROXY=edge
+      - KC_DB_URL_HOST=auth-database
+      - KC_DB_URL_DATABASE=keycloak
+      - KC_DB_PASSWORD=password
+      - KC_DB_USERNAME=keycloak
+      - KC_DB_SCHEMA=public
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    ports:
+      - "8080:8080"
+      - "8787:8787"
+    depends_on:
+      auth-database:
+        condition: service_healthy
+    networks:
+      - keycloak-net
+
+  auth-database:
+    image: postgres:latest
+    container_name: maestro-auth-database
+    command: postgres -c 'max_connections=200' && postgres -c 'shared_buffers=24MB'
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=password
+    healthcheck:
+      test: "exit 0"
+    ports:
+      - "5432:5432"
+    networks:
+      - keycloak-net
+
+  kong:
+    image: docker.io/library/kong:3.3.0-alpine
+    container_name: maestro-kong
+    volumes:
+      - ./config/kong/kong.yaml:/usr/local/kong/declarative/kong.yml      
+    environment:
+      - KONG_DATABASE=off
+      - KONG_DECLARATIVE_CONFIG=/usr/local/kong/declarative/kong.yml
+      - KONG_PLUGINS=bundled            
+      - KONG_LOG_LEVEL=debug
+      - KONG_PROXY_ACCESS_LOG=/dev/stdout
+      - KONG_ADMIN_ACCESS_LOG=/dev/stdout
+      - KONG_PROXY_ERROR_LOG=/dev/stderr
+      - KONG_ADMIN_ERROR_LOG=/dev/stderr
+      - KONG_PROXY_LISTEN=0.0.0.0:8000, 0.0.0.0:8443 ssl http2
+      - KONG_ADMIN_LISTEN=0.0.0.0:8001, 0.0.0.0:8444 ssl
+      - KONG_ADMIN_GUI_PATH=/manager
+      - KONG_ADMIN_GUI_URL=http://localhost:8002/manager
+      - KONG_NGINX_PROXY_PROXY_BUFFER_SIZE=128k
+      - KONG_NGINX_PROXY_PROXY_BUFFERS=4 256k
+      - KONG_NGINX_PROXY_LARGE_CLIENT_HEADER_BUFFERS=64 512K
+    ports:
+      - "8000:8000"
+      - "8002:8002"
+      - "8443:8443"
+      - "127.0.0.1:8001:8001"
+      - "127.0.0.1:8444:8444"
+    networks:
+      - keycloak-net
+
+  httpbin:
+    image: kennethreitz/httpbin
+    container_name: maestro-httpbin
+    ports:
+      - "80:80"
+    networks:
+      - keycloak-net
+
+networks:
+  keycloak-net:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  keycloak_data:
