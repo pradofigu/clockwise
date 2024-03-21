@@ -56,30 +56,30 @@ export class PointService {
     let lastEntranceTime: Date | null = null;
 
     points.forEach((point, index) => {
-      if (!pointsByUser[point.user_id]) {
-        pointsByUser[point.user_id] = {
-          user_id: point.user_id,
+      if (!pointsByUser[point.userId]) {
+        pointsByUser[point.userId] = {
+          user_id: point.userId,
           date: startOfDay.toISOString(),
           interval: '',
           in_working: '',
           points: [],
         };
       }
-      pointsByUser[point.user_id].points.push({
+      pointsByUser[point.userId].points.push({
         id: point.id,
-        point_type: point.point_type,
+        point_type: point.pointType,
         time: point.time.toISOString(),
       });
 
       // Calcular intervalo entre "exit" e "entrance"
-      if (index > 0 && point.point_type === 'exit') {
+      if (index > 0 && point.pointType === 'exit') {
         const exitTime = new Date(point.time);
         const entranceTime = new Date(points[index - 1].time);
         totalInterval += exitTime.getTime() - entranceTime.getTime();
       }
 
       // Calcular tempo "in_working"
-      if (point.point_type === 'entrance') {
+      if (point.pointType === 'entrance') {
         if (lastEntranceTime) {
           const entranceTime = new Date(point.time);
           inWorkingTime += entranceTime.getTime() - lastEntranceTime.getTime();
@@ -89,7 +89,7 @@ export class PointService {
     });
 
     // Se o último ponto for um "exit", calcular o tempo "in_working" até o momento atual
-    if (points.length > 0 && points[points.length - 1].point_type === 'exit') {
+    if (points.length > 0 && points[points.length - 1].pointType === 'exit') {
       const lastExitTime = new Date(points[points.length - 1].time);
       inWorkingTime += new Date().getTime() - lastExitTime.getTime();
     }

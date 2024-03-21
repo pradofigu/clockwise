@@ -1,7 +1,7 @@
 export class CreatePointDto {
-  point_type: string;
+  pointType: string;
 
   time: Date;
 
-  user_id: string;
+  userId: string;
 }
