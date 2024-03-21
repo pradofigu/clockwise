@@ -15,6 +15,7 @@ import { Point } from './point/entities/point.entity';
       password: 'root',
       database: 'points',
       entities: [Point],
+      timezone: 'America/Sao_Paulo',
       synchronize: true,
       logging: true,
     }),

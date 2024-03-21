@@ -8,7 +8,7 @@ export class Point {
   @Column()
   point_type: string;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP(0)' })
   time: Date;
 
   @Column()

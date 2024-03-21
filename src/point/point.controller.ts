@@ -28,16 +28,21 @@ export class PointController {
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return this.pointService.findOne(+id);
+    return this.pointService.findOne(id);
+  }
+
+  @Get('findByDate/:date')
+  findByDate(@Param('date') date: string) {
+    return this.pointService.findByDate(new Date(date));
   }
 
   @Patch(':id')
   update(@Param('id') id: string, @Body() updatePointDto: UpdatePointDto) {
-    return this.pointService.update(+id, updatePointDto);
+    return this.pointService.update(id, updatePointDto);
   }
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return this.pointService.remove(+id);
+    return this.pointService.remove(id);
   }
 }

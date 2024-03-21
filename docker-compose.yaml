@@ -4,11 +4,14 @@ services:
   app-database:
     image: mysql:8.0.30-debian
     container_name: maestro-app-database
+    restart: always
     ports:
       - 3306:3306
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_DATABASE=points
+      - TZ=America/Sao_Paulo
+      - MYSQL_INITDB_SKIP_TZINFO=true
   
   keycloak:
     image: quay.io/keycloak/keycloak:21.0.1
