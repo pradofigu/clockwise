@@ -6,11 +6,11 @@ export class Point {
   id: string;
 
   @Column()
-  point_type: string;
+  pointType: string;
 
   @Column({ type: 'datetime', default: () => 'CURRENT_TIMESTAMP(0)' })
   time: Date;
 
   @Column()
-  user_id: string;
+  userId: string;
 }
