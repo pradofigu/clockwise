@@ -9,4 +9,4 @@ import { Clockwise } from './entities/clockwise.entity';
   controllers: [ClockController],
   providers: [ClockService],
 })
-export class PointModule {}
+export class ClockModule {}

@@ -1,12 +1,12 @@
 GET http://localhost:3000/point
 
 ###
-// BATER PONTO: Os pointType são "entrance" e "exit".
-// O primeiro tem que ser "entrance" e ir intercalando com "exit"
-POST http://localhost:3000/point
+// BATER PONTO: Os clockType são "Clock In" e "Clock Out".
+// O primeiro tem que ser "Clock In" e ir intercalando com "Clock Out"
+POST http://localhost:3000/clockings
 content-type: application/json
 
 {
-  "pointType":"entrance",
+  "clockType":"Clock In",
   "userId": "12345678"
 }
