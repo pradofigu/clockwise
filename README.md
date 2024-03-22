@@ -14,12 +14,12 @@ Abaixo segue a modelagem da nossa solução no modelo C4 de diagramação.
 
 ### 01 - Sistema de Ponto System Context
 
-![alt text](src/img/01-ponto-system-context.png)
+![alt text](docs/01-ponto-system-context.png)
 
 ### 02 - Sistema de Ponto Pipeline
 
-![alt text](src/img/02-pipeline-diagram.png)
+![alt text](docs/02-pipeline-diagram.png)
 
 ### 02 - Sistema de Ponto Infraestrutura
 
-![alt text](src/img/03-infrastructure-diagram.png)
+![alt text](docs/03-infrastructure-diagram.png)
