@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PointModule } from './point/point.module';
+import { PointModule } from './clockwise/point.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Point } from './point/entities/point.entity';
+import { Point } from './clockwise/entities/point.entity';
 
 @Module({
   imports: [
