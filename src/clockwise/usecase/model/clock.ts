@@ -1,4 +1,4 @@
-export interface ClockResponse {
+export interface Clock {
   userId: string;
   date: string;
   inWorking: string;

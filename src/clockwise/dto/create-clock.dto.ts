@@ -1,5 +1,5 @@
 import { Transform } from 'class-transformer';
-import { ClockType } from '../entities/clockwise.entity';
+import { ClockType } from '../persistence/entities/clockwise.entity';
 import { IsEnum } from 'class-validator';
 
 export class CreateClockDto {
