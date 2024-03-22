@@ -23,18 +23,18 @@ services:
     url: https://no-route
     path: /
     routes:
-      - name: maestro-auth
+      - name: clockwise-auth
         paths:
-          - /auth/maestro$
+          - /auth/clockwise
     plugins:
       - name: kong-oidc
         enabled: true
         config:
           client_id: "ms-point"
           client_secret: "FtZ6LT7vVxmEUmWd4CV5sABLtv5vTcEL"
-          auth_url: "http://localhost:8080/realms/maestro/protocol/openid-connect/auth"
-          token_url: "http://host.docker.internal:8080/realms/maestro/protocol/openid-connect/token"
-          logout_url: "http://host.docker.internal:8080/realms/maestro/protocol/openid-connect/logout"
+          auth_url: "http://localhost:8080/realms/clockwise/protocol/openid-connect/auth"
+          token_url: "http://host.docker.internal:8080/realms/clockwise/protocol/openid-connect/token"
+          logout_url: "http://host.docker.internal:8080/realms/clockwise/protocol/openid-connect/logout"
           callback_url: "https://webhook.site/5d3d3f6a-afd4-43a6-8a74-27b4c270df5b"
   - name: user-service
     url: http://httpbin

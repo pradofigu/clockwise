@@ -19,7 +19,7 @@ services:
     command: start-dev --log-level=INFO
     volumes:            
       - ./config/keycloak/disable-theme-cache.cli:/opt  /startup-scripts/disable-theme-cache.cli
-      - ./config/keycloak/themes/maestro:/opt/keycloak/themes/maestro
+      - ./config/keycloak/themes/clockwise:/opt/keycloak/themes/clockwise
       - keycloak_data:/var/lib/keycloak/data
     environment:
       - KC_DB=postgres
