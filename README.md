@@ -8,4 +8,4 @@ Abaixo segue a modelagem da nossa solução no modelo C4 de diagramação.
 
 ### 01 - Sistema de Ponto System Context
 
-![alt text](src/img/01-ponto-system-context.png)
+![alt text](docs/01-ponto-system-context.png)
