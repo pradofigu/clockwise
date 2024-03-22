@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { CreateClockDto } from './dto/create-clock.dto';
-import { UpdateClockDto } from './dto/update-clock.dto';
+import { CreateClockDto } from '../dto/create-clock.dto';
+import { UpdateClockDto } from '../dto/update-clock.dto';
 import { Between, Repository } from 'typeorm';
-import { Clockwise, ClockType } from './entities/clockwise.entity';
+import { Clockwise, ClockType } from '../persistence/entities/clockwise.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ClockResponse } from './interface/clock.interface';
+import { Clock } from './model/clock';
 import { ClockCalculator } from 'src/utils/clockCalculator';
 
 @Injectable()
@@ -35,7 +35,7 @@ export class ClockService {
     });
   }
 
-  async findByDate(date: Date): Promise<ClockResponse> {
+  async findByDate(date: Date): Promise<Clock> {
     const startOfDay = new Date(date.toISOString());
     const endOfDay = new Date(date.toISOString());
 
@@ -54,7 +54,7 @@ export class ClockService {
     if (clocks.length === 0) return null;
 
     // Group clocks by user
-    const clocksByUser: { [userId: string]: ClockResponse } = {};
+    const clocksByUser: { [userId: string]: Clock } = {};
     let lastEntranceTime: Date | null = null;
 
     clocks.forEach((clock) => {

@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClockModule } from './clockwise/clock.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Clockwise } from './clockwise/entities/clockwise.entity';
+import { Clockwise } from './clockwise/persistence/entities/clockwise.entity';
 
 @Module({
   imports: [

@@ -8,9 +8,9 @@ import {
   Delete,
   Query,
 } from '@nestjs/common';
-import { ClockService } from './clockService';
-import { CreateClockDto } from './dto/create-clock.dto';
-import { UpdateClockDto } from './dto/update-clock.dto';
+import { ClockService } from '../usecase/clockService';
+import { CreateClockDto } from '../dto/create-clock.dto';
+import { UpdateClockDto } from '../dto/update-clock.dto';
 
 @Controller('clockings')
 export class ClockController {
