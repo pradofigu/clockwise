@@ -18,6 +18,8 @@ services:
     container_name: clockwise-keycloak
     command: start-dev --log-level=INFO
     volumes:            
+      - ./config/keycloak/disable-theme-cache.cli:/opt  /startup-scripts/disable-theme-cache.cli
+      - ./config/keycloak/themes/maestro:/opt/keycloak/themes/maestro
       - keycloak_data:/var/lib/keycloak/data
     environment:
       - KC_DB=postgres
@@ -59,11 +61,14 @@ services:
     image: docker.io/library/kong:3.3.0-alpine
     container_name: clockwise-kong
     volumes:
-      - ./config/kong/kong.yaml:/usr/local/kong/declarative/kong.yml      
+      - ./config/kong/kong.yaml:/usr/local/kong/declarative/kong.yml
+      - ./config/kong/plugins/kong-oidc:/usr/local/bin/kong-oidc
     environment:
       - KONG_DATABASE=off
       - KONG_DECLARATIVE_CONFIG=/usr/local/kong/declarative/kong.yml
-      - KONG_PLUGINS=bundled            
+      - KONG_PLUGINS=bundled,kong-oidc
+      - KONG_PLUGINSERVER_NAMES=kong-oidc
+      - KONG_PLUGINSERVER_KONG_OIDC_QUERY_CMD=/usr/local/bin/kong-oidc -dump
       - KONG_LOG_LEVEL=debug
       - KONG_PROXY_ACCESS_LOG=/dev/stdout
       - KONG_ADMIN_ACCESS_LOG=/dev/stdout
