@@ -16,14 +16,20 @@ export class ClockService {
 
   async create(dto: CreateClockDto): Promise<Clockwise> {
     const createdEntity = this.repository.create(dto);
-    return this.repository.save(createdEntity);
+    const result = this.repository.save(createdEntity);
+
+    return result
+      .then((res) => res)
+      .catch((err) => {
+        throw new Error(`Error while creating a new clockwise: ${err}`);
+      });
   }
 
-  findAll() {
+  findAll(): Promise<Clockwise[]> {
     return this.repository.find();
   }
 
-  findOne(id: string) {
+  findOne(id: string): Promise<Clockwise> {
     return this.repository.findOne({
       where: { id },
     });
@@ -87,11 +93,25 @@ export class ClockService {
     return Object.values(clocksByUser)[0];
   }
 
-  update(id: string, dto: UpdateClockDto) {
-    return this.repository.update({ id }, dto);
+  async update(id: string, dto: UpdateClockDto): Promise<boolean> {
+    const result = this.repository.update({ id }, dto);
+
+    return await result
+      .then(() => true)
+      .catch((err) => {
+        console.error(`Error while updating a clockwise for the id ${id}`, err);
+        return false;
+      });
   }
 
-  delete(id: string) {
-    return this.repository.delete({ id });
+  async delete(id: string): Promise<boolean> {
+    const result = this.repository.delete({ id });
+
+    return await result
+      .then(() => true)
+      .catch((err) => {
+        console.error(`Error while deleting a clockwise for the id ${id}`, err);
+        return false;
+      });
   }
 }
