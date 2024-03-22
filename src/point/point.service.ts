@@ -5,6 +5,7 @@ import { Between, Repository } from 'typeorm';
 import { Point } from './entities/point.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PointResponse } from './interface/point.interface';
+import { DateIntervalCalculator } from 'src/utils/dateIntervalCalculator';
 
 @Injectable()
 export class PointService {
@@ -13,7 +14,7 @@ export class PointService {
     private pointRepo: Repository<Point>,
   ) {}
 
-  create(createPointDto: CreatePointDto) {
+  async create(createPointDto: CreatePointDto) {
     const point = this.pointRepo.create(createPointDto);
     return this.pointRepo.save(point);
   }
@@ -28,7 +29,7 @@ export class PointService {
     });
   }
 
-  async findByDate(date: Date): Promise<PointResponse[]> {
+  async findByDate(date: Date): Promise<PointResponse> {
     // Converter a data fornecida para UTC
     const utcDate = new Date(date.toISOString());
 
@@ -49,68 +50,58 @@ export class PointService {
       },
     });
 
+    // Se não houver pontos, retornar null
+    if (points.length === 0) {
+      return null;
+    }
+
     // Agrupar os pontos por usuário
     const pointsByUser: { [userId: string]: PointResponse } = {};
-    let totalInterval = 0;
-    let inWorkingTime = 0;
     let lastEntranceTime: Date | null = null;
+    let lastExitTime: Date | null = null;
 
-    points.forEach((point, index) => {
+    points.forEach((point) => {
       if (!pointsByUser[point.userId]) {
         pointsByUser[point.userId] = {
-          user_id: point.userId,
+          userId: point.userId,
           date: startOfDay.toISOString(),
-          interval: '',
-          in_working: '',
+          interval: '00:00:00',
+          inWorking: '00:00:00',
           points: [],
         };
       }
+
       pointsByUser[point.userId].points.push({
         id: point.id,
-        point_type: point.pointType,
+        pointType: point.pointType,
         time: point.time.toISOString(),
       });
 
-      // Calcular intervalo entre "exit" e "entrance"
-      if (index > 0 && point.pointType === 'exit') {
-        const exitTime = new Date(point.time);
-        const entranceTime = new Date(points[index - 1].time);
-        totalInterval += exitTime.getTime() - entranceTime.getTime();
-      }
-
-      // Calcular tempo "in_working"
       if (point.pointType === 'entrance') {
-        if (lastEntranceTime) {
-          const entranceTime = new Date(point.time);
-          inWorkingTime += entranceTime.getTime() - lastEntranceTime.getTime();
-        }
         lastEntranceTime = new Date(point.time);
       }
+
+      if (point.pointType === 'exit') {
+        lastExitTime = new Date(point.time);
+      }
     });
 
-    // Se o último ponto for um "exit", calcular o tempo "in_working" até o momento atual
-    if (points.length > 0 && points[points.length - 1].pointType === 'exit') {
-      const lastExitTime = new Date(points[points.length - 1].time);
-      inWorkingTime += new Date().getTime() - lastExitTime.getTime();
-    }
+    // Calcular o inWorking usando a classe DateIntervalCalculator
+    const inWorkingTime = lastEntranceTime
+      ? DateIntervalCalculator.calculateInWorkingTime(points)
+      : '00:00:00';
 
-    // Calcular intervalo total de milissegundos para horas, minutos e segundos
-    const intervalHours = Math.floor(totalInterval / 3600000);
-    const intervalMinutes = Math.floor((totalInterval % 3600000) / 60000);
-    const intervalSeconds = Math.floor((totalInterval % 60000) / 1000);
+    // Calcular o intervalo usando a classe DateIntervalCalculator
+    const intervalTime = DateIntervalCalculator.calculateIntervalTime(points);
 
-    // Converter tempo "in_working" total de milissegundos para horas, minutos e segundos
-    const inWorkingHours = Math.floor(inWorkingTime / 3600000);
-    const inWorkingMinutes = Math.floor((inWorkingTime % 3600000) / 60000);
-    const inWorkingSeconds = Math.floor((inWorkingTime % 60000) / 1000);
-
-    // Atribuir valores aos pontos
+    // Atribuir valores de inWorking e intervalo aos pontos
     Object.values(pointsByUser).forEach((userPoints) => {
-      userPoints.interval = `${intervalHours.toString().padStart(2, '0')}:${intervalMinutes.toString().padStart(2, '0')}:${intervalSeconds.toString().padStart(2, '0')}`;
-      userPoints.in_working = `${inWorkingHours.toString().padStart(2, '0')}:${inWorkingMinutes.toString().padStart(2, '0')}:${inWorkingSeconds.toString().padStart(2, '0')}`;
+      userPoints.inWorking = inWorkingTime;
+      userPoints.interval = intervalTime;
     });
 
-    return Object.values(pointsByUser);
+    // Retornar o primeiro objeto do array de valores de pointsByUser
+    return Object.values(pointsByUser)[0];
   }
 
   update(id: string, updatePointDto: UpdatePointDto) {
