@@ -11,6 +11,7 @@ import {
 import { ClockService } from '../usecase/clock.service';
 import { CreateClockDto } from '../dto/create-clock.dto';
 import { UpdateClockDto } from '../dto/update-clock.dto';
+import { ValidateDateFormatPipe } from '../common/validate-date-format.pipe';
 
 @Controller('clockings')
 export class ClockController {
@@ -27,7 +28,9 @@ export class ClockController {
   }
 
   @Get()
-  async findAllOrFiltering(@Query('startDate') startDate?: string) {
+  async findAllOrFiltering(
+    @Query('startDate', ValidateDateFormatPipe) startDate?: string,
+  ) {
     if (startDate) {
       return await this.service.findByDate(new Date(startDate));
     } else {
