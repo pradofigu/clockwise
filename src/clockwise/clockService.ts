@@ -4,14 +4,14 @@ import { UpdateClockDto } from './dto/update-clock.dto';
 import { Between, Repository } from 'typeorm';
 import { Clockwise, ClockType } from './entities/clockwise.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { ClockResponse } from './interface/point.interface';
+import { ClockResponse } from './interface/clock.interface';
 import { ClockCalculator } from 'src/utils/clockCalculator';
 
 @Injectable()
 export class ClockService {
   constructor(
     @InjectRepository(Clockwise)
-    private repository: Repository<Clockwise>,
+    private readonly repository: Repository<Clockwise>,
   ) {}
 
   async create(dto: CreateClockDto): Promise<Clockwise> {
@@ -79,16 +79,16 @@ export class ClockService {
 
     const intervalTime = ClockCalculator.getInterval(clocks);
 
-    Object.values(clocksByUser).forEach((userPoints) => {
-      userPoints.inWorking = inWorkingTime;
-      userPoints.interval = intervalTime;
+    Object.values(clocksByUser).forEach((userClocks) => {
+      userClocks.inWorking = inWorkingTime;
+      userClocks.interval = intervalTime;
     });
 
     return Object.values(clocksByUser)[0];
   }
 
-  update(id: string, updatePointDto: UpdateClockDto) {
-    return this.repository.update({ id }, updatePointDto);
+  update(id: string, dto: UpdateClockDto) {
+    return this.repository.update({ id }, dto);
   }
 
   delete(id: string) {

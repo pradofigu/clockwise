@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { PointModule } from './clockwise/point.module';
+import { ClockModule } from './clockwise/clock.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Clockwise } from './clockwise/entities/clockwise.entity';
 
@@ -19,7 +19,7 @@ import { Clockwise } from './clockwise/entities/clockwise.entity';
       synchronize: true,
       logging: true,
     }),
-    PointModule,
+    ClockModule,
   ],
   controllers: [AppController],
   providers: [AppService],

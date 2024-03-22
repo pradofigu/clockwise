@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { ClockService } from './clockService';
 
-describe('PointService', () => {
+describe('ClockService', () => {
   let service: ClockService;
 
   beforeEach(async () => {

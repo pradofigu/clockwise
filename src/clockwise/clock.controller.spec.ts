@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { ClockController } from './clockController';
 import { ClockService } from './clockService';
 
-describe('PointController', () => {
+describe('ClockController', () => {
   let controller: ClockController;
 
   beforeEach(async () => {
