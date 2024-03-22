@@ -1,4 +1,7 @@
-import { ClockType, ClockEntity } from '../clockwise/persistence/entities/clock.entity';
+import {
+  ClockType,
+  ClockEntity,
+} from '../clockwise/persistence/entities/clock.entity';
 
 export class ClockCalculator {
   static getWorkedTimeAmount(clocks: ClockEntity[]): string {

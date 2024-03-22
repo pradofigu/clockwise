@@ -5,7 +5,7 @@ import { Between, Repository } from 'typeorm';
 import { ClockEntity, ClockType } from '../persistence/entities/clock.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Clock } from './model/clock';
-import { ClockCalculator } from 'src/utils/clock-calculator';
+import { ClockCalculator } from '../../utils/clock-calculator';
 
 @Injectable()
 export class ClockService {
