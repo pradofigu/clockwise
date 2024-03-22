@@ -1,11 +1,11 @@
 export interface PointResponse {
-  user_id: string;
+  userId: string;
   date: string;
-  in_working: string;
+  inWorking: string;
   interval: string;
   points: {
     id: string;
-    point_type: string;
+    pointType: string;
     time: string;
   }[];
 }

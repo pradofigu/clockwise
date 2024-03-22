@@ -1,6 +1,8 @@
 GET http://localhost:3000/point
 
 ###
+// BATER PONTO: Os pointType são "entrance" e "exit".
+// O primeiro tem que ser "entrance" e ir intercalando com "exit"
 POST http://localhost:3000/point
 content-type: application/json
 
