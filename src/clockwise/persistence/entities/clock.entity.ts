@@ -6,7 +6,7 @@ export enum ClockType {
 }
 
 @Entity()
-export class Clockwise {
+export class ClockEntity {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 

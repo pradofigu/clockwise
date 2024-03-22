@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ClockController } from './clockController';
-import { ClockService } from '../usecase/clockService';
+import { ClockController } from './clock.controller';
+import { ClockService } from '../usecase/clock.service';
 
 describe('ClockController', () => {
   let controller: ClockController;

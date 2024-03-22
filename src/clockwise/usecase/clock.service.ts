@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CreateClockDto } from '../dto/create-clock.dto';
-import { UpdateClockDto } from '../dto/update-clock.dto';
+import { CreateClockDto } from '../dto/createClock.dto';
+import { UpdateClockDto } from '../dto/updateClock.dto';
 import { Between, Repository } from 'typeorm';
-import { Clockwise, ClockType } from '../persistence/entities/clockwise.entity';
+import { ClockEntity, ClockType } from '../persistence/entities/clock.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Clock } from './model/clock';
 import { ClockCalculator } from 'src/utils/clockCalculator';
@@ -10,11 +10,11 @@ import { ClockCalculator } from 'src/utils/clockCalculator';
 @Injectable()
 export class ClockService {
   constructor(
-    @InjectRepository(Clockwise)
-    private readonly repository: Repository<Clockwise>,
+    @InjectRepository(ClockEntity)
+    private readonly repository: Repository<ClockEntity>,
   ) {}
 
-  async create(dto: CreateClockDto): Promise<Clockwise> {
+  async create(dto: CreateClockDto): Promise<ClockEntity> {
     const createdEntity = this.repository.create(dto);
     const result = this.repository.save(createdEntity);
 
@@ -25,11 +25,11 @@ export class ClockService {
       });
   }
 
-  findAll(): Promise<Clockwise[]> {
+  findAll(): Promise<ClockEntity[]> {
     return this.repository.find();
   }
 
-  findOne(id: string): Promise<Clockwise> {
+  findOne(id: string): Promise<ClockEntity> {
     return this.repository.findOne({
       where: { id },
     });

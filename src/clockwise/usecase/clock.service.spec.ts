@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { ClockService } from './clockService';
+import { ClockService } from './clock.service';
 
 describe('ClockService', () => {
   let service: ClockService;

@@ -1,11 +1,11 @@
 import { Module } from '@nestjs/common';
-import { ClockService } from './usecase/clockService';
-import { ClockController } from './controller/clockController';
+import { ClockService } from './usecase/clock.service';
+import { ClockController } from './controller/clock.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Clockwise } from './persistence/entities/clockwise.entity';
+import { ClockEntity } from './persistence/entities/clock.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Clockwise])],
+  imports: [TypeOrmModule.forFeature([ClockEntity])],
   controllers: [ClockController],
   providers: [ClockService],
 })

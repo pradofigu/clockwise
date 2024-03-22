@@ -1,20 +1,20 @@
-import { ClockType, Clockwise } from '../clockwise/persistence/entities/clockwise.entity';
+import { ClockType, ClockEntity } from '../clockwise/persistence/entities/clock.entity';
 
 export class ClockCalculator {
-  static getWorkedTimeAmount(clocks: Clockwise[]): string {
+  static getWorkedTimeAmount(clocks: ClockEntity[]): string {
     const timeInMillis = this.calculateTime(clocks, ClockType.CLOCK_IN);
 
     return this.formatTime(timeInMillis);
   }
 
-  static getInterval(clocks: Clockwise[]): string {
+  static getInterval(clocks: ClockEntity[]): string {
     const timeInMillis = this.calculateTime(clocks, ClockType.CLOCK_OUT);
 
     return this.formatTime(timeInMillis);
   }
 
   private static calculateTime(
-    clocks: Clockwise[],
+    clocks: ClockEntity[],
     clockType: ClockType,
   ): number {
     let timeInMillis = 0;
@@ -42,7 +42,7 @@ export class ClockCalculator {
    * 2. Clocks' length is odd and last clock is 'clock in'
    * */
   private static shouldCalculateLastClock(
-    clocks: Clockwise[],
+    clocks: ClockEntity[],
     clockType: ClockType,
   ): boolean {
     return (
