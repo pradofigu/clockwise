@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ClockModule } from './clockwise/clock.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Clockwise } from './clockwise/persistence/entities/clockwise.entity';
+import { ClockEntity } from './clockwise/persistence/entities/clock.entity';
 
 @Module({
   imports: [
@@ -14,7 +14,7 @@ import { Clockwise } from './clockwise/persistence/entities/clockwise.entity';
       username: 'root',
       password: 'root',
       database: 'clockwise',
-      entities: [Clockwise],
+      entities: [ClockEntity],
       timezone: 'America/Sao_Paulo',
       synchronize: true,
       logging: true,
