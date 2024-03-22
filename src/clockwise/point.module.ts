@@ -2,10 +2,10 @@ import { Module } from '@nestjs/common';
 import { PointService } from './point.service';
 import { PointController } from './point.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Point } from './entities/point.entity';
+import { Clockwise } from './entities/point.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Point])],
+  imports: [TypeOrmModule.forFeature([Clockwise])],
   controllers: [PointController],
   providers: [PointService],
 })

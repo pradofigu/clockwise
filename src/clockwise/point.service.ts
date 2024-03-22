@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreatePointDto } from './dto/create-point.dto';
 import { UpdatePointDto } from './dto/update-point.dto';
 import { Between, Repository } from 'typeorm';
-import { Point } from './entities/point.entity';
+import { Clockwise, ClockType } from './entities/point.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PointResponse } from './interface/point.interface';
 import { ClockCalculator } from 'src/utils/clockCalculator';
@@ -10,8 +10,8 @@ import { ClockCalculator } from 'src/utils/clockCalculator';
 @Injectable()
 export class PointService {
   constructor(
-    @InjectRepository(Point)
-    private pointRepo: Repository<Point>,
+    @InjectRepository(Clockwise)
+    private pointRepo: Repository<Clockwise>,
   ) {}
 
   async create(createPointDto: CreatePointDto) {

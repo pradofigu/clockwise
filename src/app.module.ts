@@ -3,7 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { PointModule } from './clockwise/point.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Point } from './clockwise/entities/point.entity';
+import { Clockwise } from './clockwise/entities/point.entity';
 
 @Module({
   imports: [
@@ -13,8 +13,8 @@ import { Point } from './clockwise/entities/point.entity';
       port: 3306,
       username: 'root',
       password: 'root',
-      database: 'points',
-      entities: [Point],
+      database: 'clockwise',
+      entities: [Clockwise],
       timezone: 'America/Sao_Paulo',
       synchronize: true,
       logging: true,
