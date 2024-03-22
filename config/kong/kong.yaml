@@ -1,0 +1,51 @@
+_format_version: "2.1"
+
+services:
+  - name: keycloak-service
+    url: "http://host.docker.internal:8080"
+    path: /
+    routes:
+      - name: keycloak-token-routes
+        paths:
+          - /auth/(?<realm>[^/]+)/token
+        preserve_host: false
+        strip_path: false
+        regex_priority: 0
+        request_buffering: true
+        response_buffering: true
+        plugins:
+          - name: request-transformer
+            enabled: true
+            config:
+              replace:
+                uri: /realms/$(uri_captures["realm"])/protocol/openid-connect/token
+  - name: authentication-service
+    url: https://no-route
+    path: /
+    routes:
+      - name: maestro-auth
+        paths:
+          - /auth/maestro$
+    plugins:
+      - name: kong-oidc
+        enabled: true
+        config:
+          client_id: "ms-point"
+          client_secret: "FtZ6LT7vVxmEUmWd4CV5sABLtv5vTcEL"
+          auth_url: "http://localhost:8080/realms/maestro/protocol/openid-connect/auth"
+          token_url: "http://host.docker.internal:8080/realms/maestro/protocol/openid-connect/token"
+          logout_url: "http://host.docker.internal:8080/realms/maestro/protocol/openid-connect/logout"
+          callback_url: "https://webhook.site/5d3d3f6a-afd4-43a6-8a74-27b4c270df5b"
+  - name: user-service
+    url: http://httpbin
+    path: /
+    routes:
+      - name: user-routes
+        paths:
+          - /v1/user
+      - name: company-routes
+        paths:
+          - /v1/company
+      - name: service-routes
+        paths:
+          - /v1/service
