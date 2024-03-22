@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreatePointDto } from './dto/create-point.dto';
 import { UpdatePointDto } from './dto/update-point.dto';
 import { Between, Repository } from 'typeorm';
-import { Clockwise, ClockType } from './entities/point.entity';
+import { Clockwise, ClockType } from './entities/clockwise.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PointResponse } from './interface/point.interface';
 import { ClockCalculator } from 'src/utils/clockCalculator';

@@ -1,4 +1,4 @@
-import { ClockType, Clockwise } from '../clockwise/entities/point.entity';
+import { ClockType, Clockwise } from '../clockwise/entities/clockwise.entity';
 
 export class ClockCalculator {
   static getWorkedTimeAmount(clocks: Clockwise[]): string {
