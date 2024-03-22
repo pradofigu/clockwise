@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { CreateClockDto } from '../dto/createClock.dto';
-import { UpdateClockDto } from '../dto/updateClock.dto';
+import { CreateClockDto } from '../dto/create-clock.dto';
+import { UpdateClockDto } from '../dto/update-clock.dto';
 import { Between, Repository } from 'typeorm';
 import { ClockEntity, ClockType } from '../persistence/entities/clock.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Clock } from './model/clock';
-import { ClockCalculator } from 'src/utils/clockCalculator';
+import { ClockCalculator } from 'src/utils/clock-calculator';
 
 @Injectable()
 export class ClockService {
