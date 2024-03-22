@@ -17,31 +17,31 @@ export class ClockController {
   constructor(private readonly service: ClockService) {}
 
   @Post()
-  create(@Body() dto: CreateClockDto) {
-    return this.service.create(dto);
+  async create(@Body() dto: CreateClockDto) {
+    return await this.service.create(dto);
   }
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.service.findOne(id);
+  async findOne(@Param('id') id: string) {
+    return await this.service.findOne(id);
   }
 
   @Get()
-  findByDate(@Query('startDate') startDate?: string) {
+  async findAllOrFiltering(@Query('startDate') startDate?: string) {
     if (startDate) {
-      return this.service.findByDate(new Date(startDate));
+      return await this.service.findByDate(new Date(startDate));
     } else {
-      return this.service.findAll();
+      return await this.service.findAll();
     }
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() dto: UpdateClockDto) {
-    return this.service.update(id, dto);
+  async update(@Param('id') id: string, @Body() dto: UpdateClockDto) {
+    return await this.service.update(id, dto);
   }
 
   @Delete(':id')
-  delete(@Param('id') id: string) {
-    return this.service.delete(id);
+  async delete(@Param('id') id: string) {
+    return await this.service.delete(id);
   }
 }
