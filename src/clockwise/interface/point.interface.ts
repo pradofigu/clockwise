@@ -1,11 +1,11 @@
-export interface PointResponse {
+export interface ClockResponse {
   userId: string;
   date: string;
   inWorking: string;
   interval: string;
-  points: {
+  clock: {
     id: string;
-    pointType: string;
+    clockType: string;
     time: string;
   }[];
 }
