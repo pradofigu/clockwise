@@ -5,7 +5,7 @@ import { Between, Repository } from 'typeorm';
 import { Point } from './entities/point.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PointResponse } from './interface/point.interface';
-import { DateIntervalCalculator } from 'src/utils/dateIntervalCalculator';
+import { ClockCalculator } from 'src/utils/clockCalculator';
 
 @Injectable()
 export class PointService {
@@ -88,11 +88,11 @@ export class PointService {
 
     // Calcular o inWorking usando a classe DateIntervalCalculator
     const inWorkingTime = lastEntranceTime
-      ? DateIntervalCalculator.calculateInWorkingTime(points)
+      ? ClockCalculator.getWorkedTimeAmount(points)
       : '00:00:00';
 
     // Calcular o intervalo usando a classe DateIntervalCalculator
-    const intervalTime = DateIntervalCalculator.calculateIntervalTime(points);
+    const intervalTime = ClockCalculator.getInterval(points);
 
     // Atribuir valores de inWorking e intervalo aos pontos
     Object.values(pointsByUser).forEach((userPoints) => {
