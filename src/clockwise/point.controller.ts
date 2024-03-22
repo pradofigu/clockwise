@@ -7,13 +7,13 @@ import {
   Param,
   Delete,
 } from '@nestjs/common';
-import { PointService } from './point.service';
+import { ClockService } from './clockService';
 import { CreatePointDto } from './dto/create-point.dto';
 import { UpdatePointDto } from './dto/update-point.dto';
 
 @Controller('clockwise')
 export class PointController {
-  constructor(private readonly pointService: PointService) {}
+  constructor(private readonly pointService: ClockService) {}
 
   @Post()
   create(@Body() createPointDto: CreatePointDto) {
