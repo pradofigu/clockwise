@@ -1,25 +1,25 @@
-import { Point } from '../clockwise/entities/point.entity';
+import { ClockType, Clockwise } from '../clockwise/entities/point.entity';
 
 export class ClockCalculator {
-  static getWorkedTimeAmount(clocks: Point[]): string {
-    const timeInMillis = this.calculateTime(clocks, 'entrance');
+  static getWorkedTimeAmount(clocks: Clockwise[]): string {
+    const timeInMillis = this.calculateTime(clocks, ClockType.CLOCK_IN);
 
     return this.formatTime(timeInMillis);
   }
 
-  static getInterval(clocks: Point[]): string {
-    const timeInMillis = this.calculateTime(clocks, 'exit');
+  static getInterval(clocks: Clockwise[]): string {
+    const timeInMillis = this.calculateTime(clocks, ClockType.CLOCK_OUT);
 
     return this.formatTime(timeInMillis);
   }
 
   private static calculateTime(
-    clocks: Point[],
-    pointType: 'entrance' | 'exit',
+    clocks: Clockwise[],
+    clockType: ClockType,
   ): number {
     let timeInMillis = 0;
     const adjustment = (index: number) =>
-      index + (pointType === 'entrance' ? 0 : 1);
+      index + (clockType === ClockType.CLOCK_IN ? 0 : 1);
 
     for (let i = adjustment(0); i < clocks.length - 1; i += 2) {
       const start = new Date(clocks[i].time);
@@ -27,7 +27,7 @@ export class ClockCalculator {
       timeInMillis += end.getTime() - start.getTime();
     }
 
-    if (this.shouldCalculateLastClock(clocks, pointType)) {
+    if (this.shouldCalculateLastClock(clocks, clockType)) {
       const lastClock = new Date(clocks[clocks.length - 1].time);
       const currentTime = new Date();
       timeInMillis += currentTime.getTime() - lastClock.getTime();
@@ -42,12 +42,12 @@ export class ClockCalculator {
    * 2. Clocks' length is odd and last clock is 'clock in'
    * */
   private static shouldCalculateLastClock(
-    clocks: Point[],
-    pointType: 'entrance' | 'exit',
+    clocks: Clockwise[],
+    clockType: ClockType,
   ): boolean {
     return (
       clocks.length % 2 !== 0 &&
-      clocks[clocks.length - 1].pointType === pointType
+      clocks[clocks.length - 1].clockType === clockType
     );
   }
 

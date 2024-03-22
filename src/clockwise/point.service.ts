@@ -73,15 +73,15 @@ export class PointService {
 
       pointsByUser[point.userId].points.push({
         id: point.id,
-        pointType: point.pointType,
+        pointType: point.clockType,
         time: point.time.toISOString(),
       });
 
-      if (point.pointType === 'entrance') {
+      if (point.clockType === ClockType.CLOCK_IN) {
         lastEntranceTime = new Date(point.time);
       }
 
-      if (point.pointType === 'exit') {
+      if (point.clockType === ClockType.CLOCK_OUT) {
         lastExitTime = new Date(point.time);
       }
     });
