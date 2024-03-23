@@ -1,0 +1,28 @@
+### API that registries clock in or clock out. ClockTypes "ClockModel In" and "ClockModel Out"
+POST http://localhost:3000/clockings
+content-type: application/json
+
+{
+  "clockType":"ClockModel In",
+  "userId": "12345678"
+}
+
+### Get all clockings
+GET http://localhost:3000/clockings
+content-type: application/json
+
+### Get all clockings starting from a given date. :startDate must follow the following format: yyyy-MM-dd
+GET http://localhost:3000/clockings?startDate=:startDate
+content-type: application/json
+
+### Get a specific clocking from a given ID
+GET http://localhost:3000/clockings/:id
+content-type: application/json
+
+### Partially updates a Clock data given its ID
+PATCH http://localhost:3000/clockings/:id
+content-type: application/json
+
+### Deletes a clocking given its ID
+DELETE http://localhost:3000/clockings/:id
+content-type: application/json
