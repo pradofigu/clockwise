@@ -84,9 +84,8 @@ export class ClockService {
       : '00:00:00';
 
     /*
-     * Remove o primeiro item do array para cair na regra do 'shouldCalculateLastClock'
-     * Apenas para fins de cálculo de intervalo em tempo real, como acontece
-     * com o inWorkingTime
+     * Removes the first item of the list to enter in 'shouldCalculateLastClock'
+     * rule, in order to calculate interval in real-time just as 'inWorkingTime'
      */
     const intervalTime = ClockCalculator.getInterval(clocks.slice(1));
 
