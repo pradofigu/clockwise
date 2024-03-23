@@ -36,6 +36,7 @@ export class ClockCalculator {
     }
 
     if (
+      clocks[clocks.length - 1] &&
       !this.isSameDateAsToday(clocks[clocks.length - 1].time) &&
       clockType === ClockType.CLOCK_OUT
     ) {
@@ -50,7 +51,7 @@ export class ClockCalculator {
       timeInMillis -= difference;
     }
 
-    return timeInMillis;
+    return timeInMillis < 0 ? 0 : timeInMillis;
   }
 
   /**
