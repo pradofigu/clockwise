@@ -9,13 +9,12 @@ import { ClockEntity } from './clockwise/persistence/entities/clock.entity';
   imports: [
     TypeOrmModule.forRoot({
       type: 'mysql',
-      host: 'localhost',
+      host: 'app-database',
       port: 3306,
       username: 'root',
       password: 'root',
       database: 'clockwise',
       entities: [ClockEntity],
-      timezone: 'America/Sao_Paulo',
       synchronize: true,
       logging: true,
     }),

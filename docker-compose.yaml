@@ -1,6 +1,20 @@
 version: "3.7"
 
 services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: clockwise-app
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    depends_on:
+      - app-database
+    networks:
+      - clockwise-network
+
   app-database:
     image: mysql:8.0.30-debian
     container_name: clockwise-app-database
@@ -12,7 +26,9 @@ services:
       - MYSQL_DATABASE=clockwise
       - TZ=America/Sao_Paulo
       - MYSQL_INITDB_SKIP_TZINFO=true
-  
+    networks:
+      - clockwise-network
+
   keycloak:
     image: quay.io/keycloak/keycloak:21.0.1
     container_name: clockwise-keycloak
@@ -38,7 +54,7 @@ services:
       auth-database:
         condition: service_healthy
     networks:
-      - keycloak-net
+      - clockwise-network
 
   auth-database:
     image: postgres:latest
@@ -55,14 +71,14 @@ services:
     ports:
       - "5432:5432"
     networks:
-      - keycloak-net
+      - clockwise-network
 
   kong:
     image: docker.io/library/kong:3.3.0-alpine
     container_name: clockwise-kong
     volumes:
       - ./config/kong/kong.yaml:/usr/local/kong/declarative/kong.yml
-      - ./config/kong/plugins/kong-oidc:/usr/local/bin/kong-oidc     
+      - ./config/kong/plugins/kong-oidc:/usr/local/bin/kong-oidc
     environment:
       - KONG_DATABASE=off
       - KONG_DECLARATIVE_CONFIG=/usr/local/kong/declarative/kong.yml
@@ -88,7 +104,7 @@ services:
       - "127.0.0.1:8001:8001"
       - "127.0.0.1:8444:8444"
     networks:
-      - keycloak-net
+      - clockwise-network
 
   httpbin:
     image: kennethreitz/httpbin
@@ -96,10 +112,10 @@ services:
     ports:
       - "80:80"
     networks:
-      - keycloak-net
+      - clockwise-network
 
 networks:
-  keycloak-net:
+  clockwise-network:
     driver: bridge
 
 volumes:
