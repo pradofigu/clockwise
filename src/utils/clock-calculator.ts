@@ -32,8 +32,22 @@ export class ClockCalculator {
 
     if (this.shouldCalculateLastClock(clocks, clockType)) {
       const lastClock = new Date(clocks[clocks.length - 1].time);
-      const currentTime = new Date();
-      timeInMillis += currentTime.getTime() - lastClock.getTime();
+      timeInMillis += this.getCurrentTime().getTime() - lastClock.getTime();
+    }
+
+    if (
+      !this.isSameDateAsToday(clocks[clocks.length - 1].time) &&
+      clockType === ClockType.CLOCK_OUT
+    ) {
+      const lastClockTime = new Date(clocks[clocks.length - 1].time);
+      const endOfDay = new Date(lastClockTime);
+      endOfDay.setHours(23, 0, 0, 0);
+      const offset = -3 * 60;
+
+      endOfDay.setMinutes(endOfDay.getMinutes() + offset);
+
+      const difference = endOfDay.getTime() - lastClockTime.getTime();
+      timeInMillis -= difference;
     }
 
     return timeInMillis;
@@ -50,7 +64,8 @@ export class ClockCalculator {
   ): boolean {
     return (
       clocks.length % 2 !== 0 &&
-      clocks[clocks.length - 1].clockType === clockType
+      clocks[clocks.length - 1].clockType === clockType &&
+      this.isSameDateAsToday(clocks[clocks.length - 1].time)
     );
   }
 
@@ -61,5 +76,31 @@ export class ClockCalculator {
     const remainingSeconds = Math.floor(seconds % 60);
 
     return `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  }
+
+  /**
+   * Returns 'true' if the time passed is equal to the current date.
+   */
+  private static isSameDateAsToday(time: Date): boolean {
+    const currentDate = new Date();
+    const offset = -3 * 60;
+
+    currentDate.setMinutes(currentDate.getMinutes() + offset);
+
+    return (
+      time.getFullYear() === currentDate.getFullYear() &&
+      time.getMonth() === currentDate.getMonth() &&
+      time.getUTCDate() === currentDate.getUTCDate()
+    );
+  }
+
+  /**
+   * Return current time and fix "Brasília" timezone:
+   **/
+  private static getCurrentTime() {
+    const currentTime = new Date();
+    const offset = -3 * 60;
+    currentTime.setMinutes(currentTime.getMinutes() + offset);
+    return currentTime;
   }
 }

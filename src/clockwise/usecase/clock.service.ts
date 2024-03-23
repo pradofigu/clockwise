@@ -83,7 +83,12 @@ export class ClockService {
       ? ClockCalculator.getWorkedTimeAmount(clocks)
       : '00:00:00';
 
-    const intervalTime = ClockCalculator.getInterval(clocks);
+    /*
+     * Remove o primeiro item do array para cair na regra do 'shouldCalculateLastClock'
+     * Apenas para fins de cálculo de intervalo em tempo real, como acontece
+     * com o inWorkingTime
+     */
+    const intervalTime = ClockCalculator.getInterval(clocks.slice(1));
 
     Object.values(clocksByUser).forEach((userClocks) => {
       userClocks.inWorking = inWorkingTime;
