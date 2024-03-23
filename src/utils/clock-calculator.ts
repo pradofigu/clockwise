@@ -95,7 +95,7 @@ export class ClockCalculator {
   }
 
   /**
-   * Return current time and fix "Brasília" timezone:
+   * Return current time and fix "GMT -3" timezone:
    **/
   private static getCurrentTime() {
     const currentTime = new Date();
