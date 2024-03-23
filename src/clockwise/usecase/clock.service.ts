@@ -55,7 +55,7 @@ export class ClockService {
 
     // Group clocks by user
     const clocksByUser: { [userId: string]: Clock } = {};
-    let lastEntranceTime: Date | null = null;
+    let lastClockInTime: Date | null = null;
 
     clocks.forEach((clock) => {
       if (!clocksByUser[clock.userId]) {
@@ -75,22 +75,22 @@ export class ClockService {
       });
 
       if (clock.clockType === ClockType.CLOCK_IN) {
-        lastEntranceTime = new Date(clock.time);
+        lastClockInTime = new Date(clock.time);
       }
     });
 
-    const inWorkingTime = lastEntranceTime
+    const inWorking = lastClockInTime
       ? ClockCalculator.getWorkedTimeAmount(clocks)
       : '00:00:00';
 
     /*
      * Removes the first item of the list to enter in 'shouldCalculateLastClock'
-     * rule, in order to calculate interval in real-time just as 'inWorkingTime'
+     * rule, in order to calculate interval in real-time just as 'inWorking'
      */
     const intervalTime = ClockCalculator.getInterval(clocks.slice(1));
 
     Object.values(clocksByUser).forEach((userClocks) => {
-      userClocks.inWorking = inWorkingTime;
+      userClocks.inWorking = inWorking;
       userClocks.interval = intervalTime;
     });
 
