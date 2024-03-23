@@ -3,7 +3,7 @@ version: "3.7"
 services:
   app-database:
     image: mysql:8.0.30-debian
-    container_name: maestro-app-database
+    container_name: clockwise-app-database
     restart: always
     ports:
       - 3306:3306
@@ -15,11 +15,11 @@ services:
   
   keycloak:
     image: quay.io/keycloak/keycloak:21.0.1
-    container_name: maestro-keycloak
+    container_name: clockwise-keycloak
     command: start-dev --log-level=INFO
     volumes:
       - ./config/keycloak/disable-theme-cache.cli:/opt  /startup-scripts/disable-theme-cache.cli
-      - ./config/keycloak/themes/maestro:/opt/keycloak/themes/maestro
+      - ./config/keycloak/themes/clockwise:/opt/keycloak/themes/clockwise
       - keycloak_data:/var/lib/keycloak/data
     environment:
       - KC_DB=postgres
@@ -42,7 +42,7 @@ services:
 
   auth-database:
     image: postgres:latest
-    container_name: maestro-auth-database
+    container_name: clockwise-auth-database
     command: postgres -c 'max_connections=200' && postgres -c 'shared_buffers=24MB'
     volumes:
       - postgres_data:/var/lib/postgresql/data
@@ -59,7 +59,7 @@ services:
 
   kong:
     image: docker.io/library/kong:3.3.0-alpine
-    container_name: maestro-kong
+    container_name: clockwise-kong
     volumes:
       - ./config/kong/kong.yaml:/usr/local/kong/declarative/kong.yml
       - ./config/kong/plugins/kong-oidc:/usr/local/bin/kong-oidc     
@@ -92,7 +92,7 @@ services:
 
   httpbin:
     image: kennethreitz/httpbin
-    container_name: maestro-httpbin
+    container_name: clockwise-httpbin
     ports:
       - "80:80"
     networks:
